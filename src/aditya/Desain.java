@@ -5,20 +5,119 @@
  */
 package aditya;
 
+import com.sun.media.sound.EmergencySoundbank;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
-
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.table.DefaultTableColumnModel;
+import javax.swing.table.DefaultTableModel;
+import java.util.*;
+import javax.swing.JOptionPane;
 /**
  *
  * @author hp
  */
-public class Desain extends javax.swing.JFrame {
 
-    /**
-     * Creates new form Desain
-     */
-    public Desain() {
-        initComponents();
+
+public class Desain extends javax.swing.JFrame {
+    
+    private int id = 0;
+    private String code;
+    private DefaultTableModel tbModel;
+    private DefaultComboBoxModel cbModel;
+    private ArrayList<Item> beli = new ArrayList<>();
+
+    public Desain (){
+        ComboItem comboItem = new ComboItem();
+        this.cbModel = new DefaultComboBoxModel();
+        
+        TableTransaksi tabelModel = new TableTransaksi();
+        this.tbModel = new DefaultTableModel(tabelModel.getKolomNama(),0);
+          initComponents();
+    }
+    //penambahan id//
+    private void incId(){
+        this.id +=1;
+    }
+    
+    //pengurangan id
+    private void decId(){
+        this.id-= 1;
+    }
+    
+     
+        
+    //AddItem 
+    private Object[] addItem(String nama,int jumlah){
+        float harga = 0;
+        ComboItem items = new ComboItem();
+            for(int i= 0; i< items.getHargaBarang().size();i++){
+                if(nama.equalsIgnoreCase(items.getJenisNama().get(i))){
+                harga = items.getHargaBarang().get(i);
+                }
+            }
+            Object[] obj ={
+                nama,
+                harga,
+                jumlah
+            };
+            return obj;
+    } 
+    
+    //set fungsi code
+    private String setCode(){
+        this.incId();
+        //tanggal
+        String sk = new SimpleDateFormat("yyMMdd").format(new Date());
+        this.code = String.format(sk + "02d%", this.id);
+        return code;
+    }
+    
+    //update fungsi jumlah
+    private void updateJumlah(String nama,int add){
+        ArrayList<String> item = new ArrayList<>();
+        for (int i = 0; i < tbModel.getRowCount(); i++){
+            item.add(tbModel.getValueAt(i, 0).toString());
+        }
+        for (int i = 0; i < item.size();i++){
+            if(item.get(i).equals(nama)){
+                int jumlah = new Integer (tbModel.getValueAt(i, 2).toString());
+                tbModel.setValueAt(jumlah + add, i, 2);
+            }
+        }
+    }
+    // melakukan penumpukan perhitungan item yang sudah ada
+    private boolean Duplicate(String nama){
+        boolean result = false;
+        ArrayList<String> item = new ArrayList<>();
+        for(int i = 0; i < tbModel.getRowCount();i++ ){
+            item.add(tbModel.getValueAt(i, 0).toString());
+        }
+        for(String i : item){
+            if(i.equals(nama)){
+                result = true;
+            }
+        }
+        return result;
+    }
+    
+    private void beli(){
+        if(isEmpty()){
+            this.simpan.setEnabled(false);
+            this.hapus.setEnabled(false);
+        }else{
+            this.simpan.setEnabled(true);
+            this.hapus.setEnabled(true);
+        }
+    }
+    
+    //ngecek jika isi tabel kosong
+    private boolean isEmpty(){
+        return this.tblItem.getModel().getRowCount()<=0;
+    }
+    private void newTransaksi(){ 
+      
         getCode.setEnabled(false);
         tambah.setEnabled(false);
         tblItem.setEnabled(false);
@@ -27,7 +126,9 @@ public class Desain extends javax.swing.JFrame {
         simpan.setEnabled(false);
         jlhItem.setEnabled(false);
         keluar.setEnabled(false);
-        
+        tbModel.setRowCount(0);
+        jlhItem.setText("");
+        beli.clear();
     }
 
     /**
@@ -58,14 +159,18 @@ public class Desain extends javax.swing.JFrame {
 
         jLabel2.setText("Item");
 
+        getCode.setEnabled(false);
         getCode.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 getCodeActionPerformed(evt);
             }
         });
 
+        jlhItem.setEnabled(false);
+
         getItem.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Kopi", "Susu", "Gula" }));
         getItem.setSelectedIndex(-1);
+        getItem.setEnabled(false);
         getItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 getItemActionPerformed(evt);
@@ -80,38 +185,34 @@ public class Desain extends javax.swing.JFrame {
         });
 
         tambah.setText("Add");
+        tambah.setEnabled(false);
         tambah.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 tambahActionPerformed(evt);
             }
         });
 
-        tblItem.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
-            },
-            new String [] {
-                "Nama", "Harga", "Jumlah"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Double.class, java.lang.Integer.class
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-        });
+        tblItem.setModel(this.tbModel);
         jScrollPane1.setViewportView(tblItem);
 
         hapus.setText("Remove");
+        hapus.setEnabled(false);
+        hapus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                hapusActionPerformed(evt);
+            }
+        });
 
         simpan.setText("Save");
+        simpan.setEnabled(false);
+        simpan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                simpanActionPerformed(evt);
+            }
+        });
 
         keluar.setText("Cancel");
+        keluar.setEnabled(false);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -178,7 +279,14 @@ public class Desain extends javax.swing.JFrame {
     }//GEN-LAST:event_getItemActionPerformed
 
     private void tambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tambahActionPerformed
-        
+        String nama = this.getItem.getSelectedItem().toString();
+        int jumlah = new Integer (this.jlhItem.getText());
+        if (Duplicate(nama)){
+            updateJumlah(nama, jumlah);
+        }else{
+            tbModel.addRow(addItem(nama, jumlah));  
+        }
+        this.beli();
     }//GEN-LAST:event_tambahActionPerformed
 
     private void getCodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getCodeActionPerformed
@@ -204,6 +312,48 @@ public class Desain extends javax.swing.JFrame {
         
         getCode.setText(dateString +"0"+ i);
     }//GEN-LAST:event_baruActionPerformed
+
+    private void hapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hapusActionPerformed
+        // TODO add your handling code here:
+        if(tblItem.getSelectedRow() <0){
+            String sbr = "pilih item yang mau dihapus";
+            JOptionPane.showInternalMessageDialog(this, sbr, "information",JOptionPane.INFORMATION_MESSAGE);
+        }else{
+            int count = tblItem.getSelectedRows().length;
+            for(int i = 0; i< count;i++){
+                tbModel.removeRow(tblItem.getSelectedRow());
+            }
+        }
+        this.beli();
+    }//GEN-LAST:event_hapusActionPerformed
+
+    private void simpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_simpanActionPerformed
+        // TODO add your handling code here:
+        try{
+            // loop setiap tabel
+            for(int i = 0; i < tbModel.getRowCount(); i++){
+                //menyimpan nama dan jumlah menjadi variable
+                String nama = tbModel.getValueAt(i, 0).toString();
+                float harga = new Float(tbModel.getValueAt(i, 1).toString());
+                int jumlah = new Integer(tbModel.getValueAt(i, 2).toString());
+                this.beli.add(new Item(nama, harga, jumlah));
+            }
+            //Transaksi dengan kode dan comitted belanja
+            Transaksi transaksi = new Transaksi(this.code, this.beli);
+            //menangani output transaksi
+            StringBuilder sbr = new StringBuilder();
+            //menambahkan hasil transaksi
+            sbr.append(transaksi.Pembayaran());
+            // memanggil dialog
+            JOptionPane.showMessageDialog(this, sbr, "Transaksi" , JOptionPane.INFORMATION_MESSAGE);
+            // melakukan transaksi baru
+            newTransaksi();
+            
+            
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+    }//GEN-LAST:event_simpanActionPerformed
 
     /**
      * @param args the command line arguments
@@ -254,4 +404,5 @@ public class Desain extends javax.swing.JFrame {
     private javax.swing.JButton tambah;
     private javax.swing.JTable tblItem;
     // End of variables declaration//GEN-END:variables
-}
+
+    }
