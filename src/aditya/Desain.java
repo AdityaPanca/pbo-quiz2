@@ -5,6 +5,9 @@
  */
 package aditya;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  *
  * @author hp
@@ -16,6 +19,15 @@ public class Desain extends javax.swing.JFrame {
      */
     public Desain() {
         initComponents();
+        getCode.setEnabled(false);
+        tambah.setEnabled(false);
+        tblItem.setEnabled(false);
+        hapus.setEnabled(false);
+        getItem.setEnabled(false);
+        simpan.setEnabled(false);
+        jlhItem.setEnabled(false);
+        keluar.setEnabled(false);
+        
     }
 
     /**
@@ -27,21 +39,171 @@ public class Desain extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        getCode = new javax.swing.JTextField();
+        jlhItem = new javax.swing.JTextField();
+        getItem = new javax.swing.JComboBox<>();
+        baru = new javax.swing.JButton();
+        tambah = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblItem = new javax.swing.JTable();
+        hapus = new javax.swing.JButton();
+        simpan = new javax.swing.JButton();
+        keluar = new javax.swing.JButton();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jLabel1.setText("Code");
+
+        jLabel2.setText("Item");
+
+        getCode.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                getCodeActionPerformed(evt);
+            }
+        });
+
+        getItem.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Kopi", "Susu", "Gula" }));
+        getItem.setSelectedIndex(-1);
+        getItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                getItemActionPerformed(evt);
+            }
+        });
+
+        baru.setText("New");
+        baru.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                baruActionPerformed(evt);
+            }
+        });
+
+        tambah.setText("Add");
+        tambah.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tambahActionPerformed(evt);
+            }
+        });
+
+        tblItem.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
+            },
+            new String [] {
+                "Nama", "Harga", "Jumlah"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Object.class, java.lang.Double.class, java.lang.Integer.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(tblItem);
+
+        hapus.setText("Remove");
+
+        simpan.setText("Save");
+
+        keluar.setText("Cancel");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(simpan)
+                                .addGap(18, 18, 18)
+                                .addComponent(keluar)
+                                .addGap(0, 158, Short.MAX_VALUE))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(getItem, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jlhItem, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(getCode)))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(tambah, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(hapus, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(baru, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(getCode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(baru))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(jlhItem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(getItem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tambah))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(hapus))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(simpan)
+                    .addComponent(keluar))
+                .addContainerGap(49, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void getItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getItemActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_getItemActionPerformed
+
+    private void tambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tambahActionPerformed
+        
+    }//GEN-LAST:event_tambahActionPerformed
+
+    private void getCodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getCodeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_getCodeActionPerformed
+
+    private void baruActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_baruActionPerformed
+        // TODO add your handling code here:
+        tambah.setEnabled(true);
+        hapus.setEnabled(true);
+        getItem.setEnabled(true);
+        simpan.setEnabled(true);
+        jlhItem.setEnabled(true);
+        keluar.setEnabled(true); 
+        baru.setEnabled(false);
+        
+        int i = 0;
+        i++;
+        
+        Date d = new Date();
+        SimpleDateFormat SDFormat = new SimpleDateFormat("yyMMdd");
+        String dateString = SDFormat.format(d);
+        
+        getCode.setText(dateString +"0"+ i);
+    }//GEN-LAST:event_baruActionPerformed
 
     /**
      * @param args the command line arguments
@@ -79,5 +241,17 @@ public class Desain extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton baru;
+    private javax.swing.JTextField getCode;
+    private javax.swing.JComboBox<String> getItem;
+    private javax.swing.JButton hapus;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextField jlhItem;
+    private javax.swing.JButton keluar;
+    private javax.swing.JButton simpan;
+    private javax.swing.JButton tambah;
+    private javax.swing.JTable tblItem;
     // End of variables declaration//GEN-END:variables
 }
