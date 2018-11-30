@@ -13,14 +13,14 @@ package aditya;
 public class Item {
     private String nama; //untuk membuat variabel nama item
     private double harga;//untuk membuat variabel harga item
-    private String jumlah;//untuk membuat variabel jumlah item
+    private int jumlah;//untuk membuat variabel jumlah item
     
     //membuat fungsi Item
     public Item() {
     }
     
     //membuat parameter Item
-    public Item(String nama, double harga, String jumlah) {
+    public Item(String nama, double harga, int jumlah) {
         this.nama = nama;
         this.harga = harga;
         this.jumlah = jumlah;
@@ -43,19 +43,22 @@ public class Item {
         this.harga = harga;
     }
 
-    public String getJumlah() {
+    public int getJumlah() {
         return jumlah;
     }
 
-    public void setJumlah(String jumlah) {
+    public void setJumlah(int jumlah) {
         this.jumlah = jumlah;
     }
+    
 
     @Override
     public String toString() {
         return "Item{" + "nama=" + nama + ", harga=" + harga + ", jumlah=" + jumlah + '}';
     }
     
-    
+    public double getTotal(){
+        return this.harga * this.jumlah;
+    }
     
 }
